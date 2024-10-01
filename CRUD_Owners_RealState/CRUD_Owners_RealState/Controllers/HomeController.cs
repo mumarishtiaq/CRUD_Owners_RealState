@@ -1,6 +1,7 @@
 ﻿using CRUD_Owners_RealState.Models;
 using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace CRUD_Owners_RealState.Controllers
@@ -30,21 +31,11 @@ namespace CRUD_Owners_RealState.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Check if an image file is provided
-                if (ownerData.ImageFile != null)
-                {
-                    //Get the filename
-                    string fileName = Path.GetFileName(ownerData.ImageFile.FileName);
+                ownerData.ImagePath = ValidateAndGetFilePath(ownerData.ImageFile);
 
-                    //Combine the path where you want to save the image
-                    string path = Path.Combine(Server.MapPath("~/UploadedImages"), fileName);
+                if (ownerData.ImagePath == string.Empty)
+                    ownerData.ImagePath = "~/ SysremImages / NoUserImage.png";
 
-                    //Set the image path in the owner object
-                    ownerData.ImagePath = "~/UploadedImages/" + fileName;
-
-                    //Save the image to the server
-                    ownerData.ImageFile.SaveAs(path);
-                }
 
                 // Save the owner data to the database (excluding ImageFile)
                 db.Owners.Add(ownerData);
@@ -64,6 +55,8 @@ namespace CRUD_Owners_RealState.Controllers
             return View();
         }
 
+       
+
         public ActionResult EditOwner(int id)
         {
             var owner = db.Owners.Where(row =>row.ID ==id).FirstOrDefault();
@@ -76,5 +69,49 @@ namespace CRUD_Owners_RealState.Controllers
         }
 
 
+
+        #region BusinessLogic
+        private string ValidateAndGetFilePath(HttpPostedFileBase imageFile)
+        {
+            if (imageFile != null)
+            {
+                var extension = Path.GetExtension(imageFile.FileName);
+
+                if (isValidExtension(extension))
+                {
+                    //Get the filename
+                    string fileName = Path.GetFileName(imageFile.FileName);
+
+                    //Combine the path where you want to save the image
+                    string path = Path.Combine(Server.MapPath("~/UploadedImages"), fileName);
+
+
+
+                    //Save the image to the server
+                    imageFile.SaveAs(path);
+
+                    return "~/UploadedImages/" + fileName;
+                }
+                else
+                {
+                    ViewBag.Message = "<script>alert('Only files supported png,jpg,jpeg')</script>";
+                    return string.Empty;
+                }
+            }
+                return string.Empty;
+            //"~/ SysremImages / NoUserImage.png"
+
+
+        }
+        private bool isValidExtension(string ext)
+        {
+            return ext.ToLower().Equals("png") || ext.ToLower().Equals("jpg") || ext.ToLower().Equals("jpeg");
+        }
+
+        //private bool isPreferredSize()
+        //{
+
+        //}
+        #endregion BusinessLogic
     }
 }
