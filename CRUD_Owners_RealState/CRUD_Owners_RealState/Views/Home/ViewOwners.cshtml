@@ -1,0 +1,19 @@
+﻿@model IEnumerable<CRUD_Owners_RealState.Models.Owner>
+
+@{
+    ViewBag.Title = "ViewOwners";
+}
+
+<h2>ViewOwners</h2>
+
+<p>
+    @Html.ActionLink("Create New", "AddOwner")
+</p>
+
+<div class="row no-gutters">
+    @foreach (var item in Model)
+    {
+        @Html.Partial("_OwnerPartialView", item)
+    }
+</div>
+

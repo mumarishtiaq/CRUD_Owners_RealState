@@ -1,0 +1,135 @@
+﻿
+@model CRUD_Owners_RealState.Models.Owner
+
+<style>
+    /* Card container for horizontal layout */
+    .owner-card {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        margin: 0 auto; /* Center the card */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+
+    /* Image container taking up a fixed percentage */
+    .owner-img-container {
+        flex: 1 0 35%; /* Image takes 35% of card width */
+        max-width: 35%; /* Ensure it doesn't exceed 35% */
+        height: auto;
+    }
+
+    /* Owner image styling */
+    .owner-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-right: 1px solid #ddd; /* Separation between image and content */
+    }
+
+    /* Details container */
+    .owner-details-container {
+        flex: 1 0 65%; /* Details take remaining 65% */
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    /* Card title and content adjustments */
+    .card-title {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
+
+    .card-text {
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    /* Footer buttons */
+    .card-footer {
+        border-top: 1px solid #ddd;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .btn-rounded {
+        border-radius: 30px;
+        font-size: 0.9rem;
+        padding: 8px 12px;
+        width: 30%; /* Buttons will have consistent width */
+        text-align: center;
+    }
+
+    /* Responsive layout */
+    .media (max-width: 768px) {
+        .owner-img-container {
+            flex: 1 0 30%; /* Image takes less width on smaller screens */
+        }
+
+        .owner-details-container {
+            flex: 1 0 70%; /* Content takes more space */
+        }
+
+        .btn-rounded {
+            width: 100%; /* Full-width buttons on small screens */
+            margin-bottom: 5px;
+        }
+
+        .card-footer {
+            flex-direction: column;
+            justify-content: center;
+        }
+    }
+
+    /* Responsive grid */
+    .row.no-gutters {
+        margin-left: -10px;
+        margin-right: -10px;
+    }
+
+    .col-md-3, .col-md-6, .col-md-12 {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+</style>
+
+<div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+    <div class="card owner-card shadow-sm">
+        <div class="d-flex flex-row">
+            <!-- Left Side: Image -->
+            <div class="owner-img-container">
+                <img src="@Url.Content(Model.ImagePath)" class="owner-img" alt="Owner Image">
+            </div>
+
+            <!-- Right Side: Content -->
+            <div class="owner-details-container flex-grow-1">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.FirstName @Model.LastName</h5>
+                    <p class="card-text"><strong>CNIC:</strong> @Model.CNIC</p>
+                    <p class="card-text"><strong>Cell No:</strong> @Model.CellNo</p>
+                    <p class="card-text">
+                        <a href="#">3 Properties Owned</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer: Buttons at the bottom, centered, and rounded -->
+        <div class="card-footer d-flex justify-content-around">
+            <a href="@Url.Action("ViewNominees", "Owner", new { id = Model.ID })" class="btn btn-info btn-rounded">View Nominees</a>
+            <a href="@Url.Action("EditOwner", "Home", new { id = Model.ID })" class="btn btn-warning btn-rounded">Edit Owner</a>
+            <a href="@Url.Action("Delete", "Owner", new { id = Model.ID })" class="btn btn-danger btn-rounded">Delete Owner</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
