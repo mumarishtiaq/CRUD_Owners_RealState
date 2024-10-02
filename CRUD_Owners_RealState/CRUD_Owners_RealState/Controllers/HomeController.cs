@@ -72,18 +72,35 @@ namespace CRUD_Owners_RealState.Controllers
             return View(owner);
         }
         [HttpPost]
-        public ActionResult EditOwner(Owner owner)
+        public ActionResult EditOwner(Owner ownerData)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                if(owner.ImageFile != null)
+                if (ownerData.ImageFile != null)
                 {
+                    if (IsValidExtension(ownerData.ImageFile))
+                    {
+                        if (IsPreferredSize(ownerData.ImageFile))
+                        {
+                            var path = SaveImageOnServer(ownerData.ImageFile);
 
+                            var isDataUpdated = UpdateOwnerData(ownerData, path);
+                            ViewBag.Message = isDataUpdated ? "<script>alert('Record Updated')</script>" : "<script>alert('Record not Updated')</script>";
+                            return RedirectToAction("ViewOwners");
+                        }
+                        else
+                            ViewBag.Message = "<script>alert('Large Size Image, upto 3 MB image is supported')</script>";
+
+                    }
+                    else
+                        ViewBag.Message = "<script>alert('Invalid Image type, only png, jpg and jpeg files are supported')</script>";
                 }
+
                 else
                 {
-                    var isDataUpdated = UpdateOwnerData(owner, Session["image"].ToString());
+                    var isDataUpdated = UpdateOwnerData(ownerData, Session["image"].ToString());
                     ViewBag.Message = isDataUpdated ? "<script>alert('Record Updated')</script>" : "<script>alert('Record not Updated')</script>";
+                    return RedirectToAction("ViewOwners");
                 }
             }
             return View();
