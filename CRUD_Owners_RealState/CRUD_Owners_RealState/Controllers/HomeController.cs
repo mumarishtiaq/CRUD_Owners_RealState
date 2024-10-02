@@ -1,14 +1,16 @@
 ﻿using CRUD_Owners_RealState.Models;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 
 namespace CRUD_Owners_RealState.Controllers
 {
     public class HomeController : Controller
     {
-        private DbContextClass db = new DbContextClass();
+       
 
 
         public ActionResult Index()
@@ -31,24 +33,30 @@ namespace CRUD_Owners_RealState.Controllers
         {
             if (ModelState.IsValid)
             {
-                ownerData.ImagePath = ValidateAndGetFilePath(ownerData.ImageFile);
-
-                if (ownerData.ImagePath == string.Empty)
-                    ownerData.ImagePath = "~/ SysremImages / NoUserImage.png";
-
-
-                // Save the owner data to the database (excluding ImageFile)
-                db.Owners.Add(ownerData);
-                int rowInserted = db.SaveChanges();
-
-                if (rowInserted > 0)
+                if (ownerData.ImageFile != null)
                 {
-                    ViewBag.Message = "<script>alert('Record Inserted')</script>";
-                    ModelState.Clear();
+                    if (IsValidExtension(ownerData.ImageFile))
+                    {
+                        if (IsPreferredSize(ownerData.ImageFile))
+                        {
+                            var path = SaveImageOnServer(ownerData.ImageFile);
+                            var isDataInserted = InsertOwnerData(ownerData, path);
+
+
+                            ViewBag.Message = isDataInserted ? "<script>alert('Record Inserted')</script>" : "<script>alert('Record not Inserted')</script>";
+                        }
+                        else
+                            ViewBag.Message = "<script>alert('Large Size Image, upto 3 MB image is supported')</script>";
+
+                    }
+                    else
+                        ViewBag.Message = "<script>alert('Invalid Image type, only png, jpg and jpeg files are supported')</script>";
                 }
                 else
                 {
-                    ViewBag.Message = "<script>alert('Record not Inserted')</script>";
+                    var isDataInserted = InsertOwnerData(ownerData, ownerDefaultImagePath);
+
+                    ViewBag.Message = isDataInserted ? "<script>alert('Record Inserted')</script>" : "<script>alert('Record not Inserted')</script>";
                 }
             }
 
@@ -60,58 +68,85 @@ namespace CRUD_Owners_RealState.Controllers
         public ActionResult EditOwner(int id)
         {
             var owner = db.Owners.Where(row =>row.ID ==id).FirstOrDefault();
+            Session["image"] = owner.ImagePath;
             return View(owner);
         }
         [HttpPost]
         public ActionResult EditOwner(Owner owner)
         {
+            if(ModelState.IsValid)
+            {
+                if(owner.ImageFile != null)
+                {
+
+                }
+                else
+                {
+                    var isDataUpdated = UpdateOwnerData(owner, Session["image"].ToString());
+                    ViewBag.Message = isDataUpdated ? "<script>alert('Record Updated')</script>" : "<script>alert('Record not Updated')</script>";
+                }
+            }
             return View();
         }
 
 
 
         #region BusinessLogic
-        private string ValidateAndGetFilePath(HttpPostedFileBase imageFile)
+
+        private string ownerDefaultImagePath = "~/SysremImages/NoUserImage.png";
+       
+        private bool IsValidExtension(HttpPostedFileBase imageFile)
         {
-            if (imageFile != null)
-            {
-                var extension = Path.GetExtension(imageFile.FileName);
+            var ext = Path.GetExtension(imageFile.FileName);
 
-                if (isValidExtension(extension))
-                {
-                    //Get the filename
-                    string fileName = Path.GetFileName(imageFile.FileName);
-
-                    //Combine the path where you want to save the image
-                    string path = Path.Combine(Server.MapPath("~/UploadedImages"), fileName);
-
-
-
-                    //Save the image to the server
-                    imageFile.SaveAs(path);
-
-                    return "~/UploadedImages/" + fileName;
-                }
-                else
-                {
-                    ViewBag.Message = "<script>alert('Only files supported png,jpg,jpeg')</script>";
-                    return string.Empty;
-                }
-            }
-                return string.Empty;
-            //"~/ SysremImages / NoUserImage.png"
-
-
-        }
-        private bool isValidExtension(string ext)
-        {
-            return ext.ToLower().Equals("png") || ext.ToLower().Equals("jpg") || ext.ToLower().Equals("jpeg");
+            return ext.ToLower().Equals(".png") || ext.ToLower().Equals(".jpg") || ext.ToLower().Equals(".jpeg");
         }
 
-        //private bool isPreferredSize()
-        //{
+        private bool IsPreferredSize(HttpPostedFileBase imageFile)
+        {
+            var contentLenght = imageFile.ContentLength;
 
-        //}
+            return contentLenght <= 3000000;
+        }
+
+        private string SaveImageOnServer(HttpPostedFileBase imageFile)
+        {
+            //Get the filename
+            string fileName = Path.GetFileName(imageFile.FileName);
+
+            //Combine the path where you want to save the image
+            string path = Path.Combine(Server.MapPath("~/UploadedImages"), fileName);
+
+            //Save the image to the server
+            imageFile.SaveAs(path);
+
+            return "~/UploadedImages/" + fileName;
+        }
+
+
         #endregion BusinessLogic
+
+        #region DataAccessLayer
+        private DbContextClass db = new DbContextClass();
+        private bool InsertOwnerData(Owner ownerData,string imagePath)
+        {
+            ownerData.ImagePath = imagePath;
+            db.Owners.Add(ownerData);
+            int rowInserted = db.SaveChanges();
+
+            return rowInserted > 0;
+        } 
+        
+        private bool UpdateOwnerData(Owner ownerData,string imagePath)
+        {
+            ownerData.ImagePath = imagePath;
+            db.Entry(ownerData).State = EntityState.Modified;
+            int rowsUpdated = db.SaveChanges();
+
+            return rowsUpdated > 0;
+        }
+
+
+        #endregion DataAccessLayer
     }
 }

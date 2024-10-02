@@ -5,11 +5,12 @@
 }
 
 <h2>EditOwner</h2>
+@Html.Raw(ViewBag.Message)
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("EditOwner", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Owner</h4>
         <hr />
@@ -71,10 +72,21 @@
                 @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        <br />
         <div class="form-group">
             @Html.LabelFor(model => model.ImagePath, htmlAttributes: new { @class = "control-label col-md-2" })
+            <br />
             <div class="col-md-10">
+                <img src="@Url.Content(@Session["image"].ToString())" alt="Alternate Text" height="80" width="80" />
+                @{
+                    var path = @Session["image"].ToString();
+                    var imageName = path.Substring(path.LastIndexOf("/") + 1);
+
+                    <strong>@imageName</strong>
+                }
+
+                <br />
+                <br />
                 <input type="file" name="ImageFile" />
             </div>
         </div>
