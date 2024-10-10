@@ -1,4 +1,6 @@
 ﻿using CRUD_Owners_RealState.Models;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
@@ -26,6 +28,15 @@ namespace CRUD_Owners_RealState.Controllers
 
         public ActionResult AddOwner()
         {
+            var ownerTypes = Enum.GetValues(typeof(OwnerType)).
+                Cast<OwnerType>().
+                Select(e => new SelectListItem
+                {
+                    Value = ((int)e).ToString(),
+                    Text = e.ToString()
+                }).ToList();
+
+            ViewBag.OwnerTypes = ownerTypes as List<SelectListItem>;
             return View();
         }
         [HttpPost]
@@ -35,26 +46,21 @@ namespace CRUD_Owners_RealState.Controllers
             {
                 if (ownerData.ImageFile != null)
                 {
-                    if (IsValidExtension(ownerData.ImageFile))
+                    //image validaton logic (checks for prefered extension and size)
+                    if (IsValidImage(ownerData.ImageFile))
                     {
-                        if (IsPreferredSize(ownerData.ImageFile))
-                        {
-                            var path = SaveImageOnServer(ownerData.ImageFile);
-                            var isDataInserted = InsertOwnerData(ownerData, path);
+                        var path = SaveImageOnServer(ownerData.ImageFile);
+                        var isDataInserted = InsertOwnerData(ownerData, path);
 
 
-                            ViewBag.Message = isDataInserted ? "<script>alert('Record Inserted')</script>" : "<script>alert('Record not Inserted')</script>";
-                        }
-                        else
-                            ViewBag.Message = "<script>alert('Large Size Image, upto 3 MB image is supported')</script>";
-
+                        ViewBag.Message = isDataInserted ? "<script>alert('Record Inserted')</script>" : "<script>alert('Record not Inserted')</script>";
                     }
                     else
                         ViewBag.Message = "<script>alert('Invalid Image type, only png, jpg and jpeg files are supported')</script>";
                 }
                 else
                 {
-                    var isDataInserted = InsertOwnerData(ownerData, ownerDefaultImagePath);
+                    var isDataInserted = InsertOwnerData(ownerData);
 
                     ViewBag.Message = isDataInserted ? "<script>alert('Record Inserted')</script>" : "<script>alert('Record not Inserted')</script>";
                 }
@@ -78,19 +84,15 @@ namespace CRUD_Owners_RealState.Controllers
             {
                 if (ownerData.ImageFile != null)
                 {
-                    if (IsValidExtension(ownerData.ImageFile))
+                    //image validaton logic (checks for prefered extension and size)
+                    if (IsValidImage(ownerData.ImageFile))
                     {
-                        if (IsPreferredSize(ownerData.ImageFile))
-                        {
-                            var path = SaveImageOnServer(ownerData.ImageFile);
+                        var path = SaveImageOnServer(ownerData.ImageFile);
 
                             var isDataUpdated = UpdateOwnerData(ownerData, path);
                             ViewBag.Message = isDataUpdated ? "<script>alert('Record Updated')</script>" : "<script>alert('Record not Updated')</script>";
                             return RedirectToAction("ViewOwners");
-                        }
-                        else
-                            ViewBag.Message = "<script>alert('Large Size Image, upto 3 MB image is supported')</script>";
-
+                       
                     }
                     else
                         ViewBag.Message = "<script>alert('Invalid Image type, only png, jpg and jpeg files are supported')</script>";
@@ -104,26 +106,6 @@ namespace CRUD_Owners_RealState.Controllers
                 }
             }
             return View();
-        }
-
-
-
-        #region BusinessLogic
-
-        private string ownerDefaultImagePath = "~/SysremImages/NoUserImage.png";
-       
-        private bool IsValidExtension(HttpPostedFileBase imageFile)
-        {
-            var ext = Path.GetExtension(imageFile.FileName);
-
-            return ext.ToLower().Equals(".png") || ext.ToLower().Equals(".jpg") || ext.ToLower().Equals(".jpeg");
-        }
-
-        private bool IsPreferredSize(HttpPostedFileBase imageFile)
-        {
-            var contentLenght = imageFile.ContentLength;
-
-            return contentLenght <= 3000000;
         }
 
         private string SaveImageOnServer(HttpPostedFileBase imageFile)
@@ -141,19 +123,48 @@ namespace CRUD_Owners_RealState.Controllers
         }
 
 
+
+        #region BusinessLogic
+
+        private const int preferedSize = 3000000;
+
+        private bool IsValidImage(HttpPostedFileBase imageFile)
+        {
+            var ext = Path.GetExtension(imageFile.FileName);
+            var contentLenght = imageFile.ContentLength;
+
+            return IsValidExtension(ext) && IsPreferredSize(contentLenght);
+        }
+
+
+        private bool IsValidExtension(string ext)
+        {
+            return ext.ToLower().Equals(".png") || ext.ToLower().Equals(".jpg") || ext.ToLower().Equals(".jpeg");
+        }
+
+        private bool IsPreferredSize(int contentLenght)
+        {
+            return contentLenght <= preferedSize;
+        }
+
+
+
         #endregion BusinessLogic
 
         #region DataAccessLayer
+
+        private const string ownerDefaultImagePath = "~/SystemImages/NoUserImage.png";
         private DbContextClass db = new DbContextClass();
-        private bool InsertOwnerData(Owner ownerData,string imagePath)
+        private bool InsertOwnerData(Owner ownerData, string imagePath = ownerDefaultImagePath)
         {
             ownerData.ImagePath = imagePath;
+            ownerData.EntryTime = DateTime.UtcNow;
             db.Owners.Add(ownerData);
             int rowInserted = db.SaveChanges();
 
             return rowInserted > 0;
-        } 
-        
+        }
+
         private bool UpdateOwnerData(Owner ownerData,string imagePath)
         {
             ownerData.ImagePath = imagePath;

@@ -143,6 +143,10 @@
     <Compile Include="Migrations\202410021910181_RemoveAnna.designer.cs">
       <DependentUpon>202410021910181_RemoveAnna.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202410101823406_UpdateOwnerTable.cs" />
+    <Compile Include="Migrations\202410101823406_UpdateOwnerTable.designer.cs">
+      <DependentUpon>202410101823406_UpdateOwnerTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DbContextClass.cs" />
     <Compile Include="Models\Owner.cs" />
@@ -243,6 +247,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202410021910181_RemoveAnna.resx">
       <DependentUpon>202410021910181_RemoveAnna.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202410101823406_UpdateOwnerTable.resx">
+      <DependentUpon>202410101823406_UpdateOwnerTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

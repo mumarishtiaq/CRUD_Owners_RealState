@@ -14,6 +14,8 @@ namespace CRUD_Owners_RealState.Models
         public int ID { get; set; }
 
         [Required(ErrorMessage = "First Name is required")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "First Name must be between 3 and 50 characters.")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "First Name cannot contain numbers or special characters.")]
         public string FirstName { get; set; }
 
         [Required(ErrorMessage = "Last Name is required")]
@@ -48,9 +50,16 @@ namespace CRUD_Owners_RealState.Models
         public DateTime DOB { get; set; }
 
         [Required(ErrorMessage = "Owner Type is required")]
-        public string OwnerType { get; set; }
+        public OwnerType OwnerType { get; set; }
 
         [NotMapped]
         public HttpPostedFileBase ImageFile { get; set; }
+
+        public DateTime EntryTime { get; set; }
     }
+}
+public enum OwnerType
+{
+    Buyer,
+    Invester
 }

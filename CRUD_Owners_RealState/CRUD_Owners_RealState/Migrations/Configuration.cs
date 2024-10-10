@@ -18,6 +18,14 @@
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method
             //  to avoid creating duplicate seed data.
+
+            //context.Database.ExecuteSqlCommand("UPDATE Owners SET OwnerType = 0 WHERE OwnerType = 'Buyer'");
+
+            //// Set 'Invester' to 1
+            //context.Database.ExecuteSqlCommand("UPDATE Owners SET OwnerType = 1 WHERE OwnerType = 'Invester'");
+
+            //// Save changes to the database
+            //context.SaveChanges();
         }
     }
 }
