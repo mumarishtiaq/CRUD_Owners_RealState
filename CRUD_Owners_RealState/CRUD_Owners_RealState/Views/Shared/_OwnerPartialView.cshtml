@@ -121,9 +121,9 @@
 
         <!-- Footer: Buttons at the bottom, centered, and rounded -->
         <div class="card-footer d-flex justify-content-around">
-            <a href="@Url.Action("ViewNominees", "Owner", new { id = Model.ID })" class="btn btn-info btn-rounded">View Nominees</a>
-            <a href="@Url.Action("EditOwner", "Home", new { id = Model.ID })" class="btn btn-warning btn-rounded">Edit Owner</a>
-            <a href="@Url.Action("Delete", "Owner", new { id = Model.ID })" class="btn btn-danger btn-rounded">Delete Owner</a>
+            <a href="@Url.Action("ViewNominees", "Owner", new { id = Model.OwnerId })" class="btn btn-info btn-rounded">View Nominees</a>
+            <a href="@Url.Action("EditOwner", "Home", new { id = Model.OwnerId })" class="btn btn-warning btn-rounded">Edit Owner</a>
+            <a href="@Url.Action("Delete", "Owner", new { id = Model.OwnerId })" class="btn btn-danger btn-rounded">Delete Owner</a>
         </div>
     </div>
 </div>

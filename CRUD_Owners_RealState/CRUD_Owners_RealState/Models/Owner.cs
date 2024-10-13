@@ -11,7 +11,7 @@ namespace CRUD_Owners_RealState.Models
     public class Owner
     {
         [Key]
-        public int ID { get; set; }
+        public int OwnerId { get; set; }
 
         [Required(ErrorMessage = "First Name is required")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "First Name must be between 3 and 50 characters.")]
@@ -55,11 +55,12 @@ namespace CRUD_Owners_RealState.Models
         [NotMapped]
         public HttpPostedFileBase ImageFile { get; set; }
 
-        public DateTime EntryTime { get; set; }
+        public virtual ICollection<Nominee> Nominees { get; set; } = new List<Nominee>();
+        //public DateTime EntryTime { get; set; }
     }
 }
 public enum OwnerType
 {
-    Buyer,
-    Invester
+    Buyer = 0,
+    Invester = 1
 }
