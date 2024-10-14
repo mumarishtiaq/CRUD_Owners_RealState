@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using CRUD_Owners_RealState.GlobalMethods;
 using CRUD_Owners_RealState.BLL;
 using CRUD_Owners_RealState.DatabaseService;
+using System;
 
 namespace CRUD_Owners_RealState.Controllers
 {
@@ -25,14 +26,29 @@ namespace CRUD_Owners_RealState.Controllers
 
         public ActionResult AddOwner()
         {
+            Owner ownerDummy  = new Owner { 
+                FirstName = "Haider",
+                LastName = "ALi",
+                CNIC = "6556546",
+                CellNo = "35265656",
+                Gender = "Male",
+                ContactNo = "654856485",
+                Address = "Gulshan hadeed",
+                ImagePath = "~/SystemImages/NoUserImage.png",
+                SODOWO = "jsdujsdh",
+                DOB = DateTime.Now,
+
+            };
             ViewBag.OwnerTypes = HelperMethods.GetListFromEnum<OwnerType>();
-            return View();
+
+            return View(ownerDummy);
         }
 
         [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult AddOwner(Owner ownerData)
         {
+
             if (ModelState.IsValid)
             {
                 if (ownerData.ImageFile != null)
@@ -55,7 +71,7 @@ namespace CRUD_Owners_RealState.Controllers
 
                     ViewBag.Message = isDataInserted ? "<script>alert('Record Inserted')</script>" : "<script>alert('Record not Inserted')</script>";
                 }
-                //return RedirectToAction("AddNominee","Nominee", new { id = ownerData.OwnerId });
+                return RedirectToAction("AddNominee", "Nominee", new { ownerID = ownerData.OwnerId });
 
             }
 

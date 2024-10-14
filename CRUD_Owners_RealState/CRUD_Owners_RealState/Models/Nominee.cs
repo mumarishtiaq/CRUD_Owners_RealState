@@ -49,11 +49,9 @@ namespace CRUD_Owners_RealState.Models
         [NotMapped]
         public HttpPostedFileBase ImageFile { get; set; }
 
-           // This maps the OwnerId to the Owner table
+        [ForeignKey("Owner")]
         public int OwnerId { get; set; }
 
-        // Navigation property to reference the Owner
-        [ForeignKey("OwnerId")]
         public virtual Owner Owner { get; set; }
 
     }

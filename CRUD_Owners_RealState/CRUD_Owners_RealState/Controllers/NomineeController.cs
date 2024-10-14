@@ -16,12 +16,23 @@ namespace CRUD_Owners_RealState.Controllers
         private DBOperations_Nominees _dbOperations = new DBOperations_Nominees();
         public ActionResult AddNominee(int ownerID)
         {
-            var o = ownerID;
-            Nominee nominee = new Nominee
-            {
+            ViewBag.RelationTypes = HelperMethods.GetListFromEnum<RelationType>();
+            Nominee nominee = new Nominee {
+                Name = "Name",
+                CNIC = "45454",
+                Relation = "Friend",
+                //Relation = RelationType.Friend,
+                SODOWO = "So/Do/Wo",
+                DOB = DateTime.Now,
+                CellNo = "5644",
+                Gender  = "Male",
+                Address = "jhfudb hf ",
+                ImagePath = "~/SystemImages/NoUserImage.png",
                 OwnerId = ownerID
             };
-            ViewBag.RelationTypes = HelperMethods.GetListFromEnum<RelationType>();
+
+          
+            
             return View(nominee);
         }
 
@@ -57,6 +68,7 @@ namespace CRUD_Owners_RealState.Controllers
 
             }
             ViewBag.RelationTypes = HelperMethods.GetListFromEnum<RelationType>();
+            ModelState.Clear();
             return View();
         }
     }

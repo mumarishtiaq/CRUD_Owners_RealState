@@ -55,7 +55,7 @@ namespace CRUD_Owners_RealState.Models
         [NotMapped]
         public HttpPostedFileBase ImageFile { get; set; }
 
-        public virtual ICollection<Nominee> Nominees { get; set; } = new List<Nominee>();
+        public virtual ICollection<Nominee> Nominees { get; set; } /*= new List<Nominee>();*/
         //public DateTime EntryTime { get; set; }
     }
 }
