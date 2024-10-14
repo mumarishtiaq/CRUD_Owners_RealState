@@ -10,6 +10,7 @@ namespace CRUD_Owners_RealState.Models
     {
         public DbSet<Owner> Owners { get; set; }
         public DbSet<Nominee> Nominees { get; set; }
+        public DbSet<Property> Properties { get; set; }
 
         public DbContextClass() : base("MyDbContext")
         {

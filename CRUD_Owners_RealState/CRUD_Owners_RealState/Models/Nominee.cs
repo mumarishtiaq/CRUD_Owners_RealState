@@ -23,7 +23,7 @@ namespace CRUD_Owners_RealState.Models
 
         [Required(ErrorMessage = "Relation is required")]
         [DisplayName("Relation with owner")]
-        public string Relation { get; set; }
+        public RelationType Relation { get; set; }
 
         [Required(ErrorMessage = "So/Do/Wo is required")]
         [DisplayName("So/Do/Wo")]
@@ -32,7 +32,7 @@ namespace CRUD_Owners_RealState.Models
         [Required(ErrorMessage = "D.O.B is required")]
         [DisplayName("D.O.B")]
         [DataType(DataType.Date)] // This ensures the input is a date
-        public DateTime DOB { get; set; }
+        public string DOB { get; set; }
 
         [Required(ErrorMessage = "Cell No is required")]
         public string CellNo { get; set; }

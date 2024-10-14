@@ -36,7 +36,7 @@ namespace CRUD_Owners_RealState.Controllers
                 Address = "Gulshan hadeed",
                 ImagePath = "~/SystemImages/NoUserImage.png",
                 SODOWO = "jsdujsdh",
-                DOB = DateTime.Now,
+                DOB = DateTime.Now.ToString("yyyy-MM-dd"),
 
             };
             ViewBag.OwnerTypes = HelperMethods.GetListFromEnum<OwnerType>();
@@ -71,8 +71,8 @@ namespace CRUD_Owners_RealState.Controllers
 
                     ViewBag.Message = isDataInserted ? "<script>alert('Record Inserted')</script>" : "<script>alert('Record not Inserted')</script>";
                 }
-                return RedirectToAction("AddNominee", "Nominee", new { ownerID = ownerData.OwnerId });
-
+                TempData["ownerId"] = ownerData.OwnerId;
+                return RedirectToAction("AddNominee", "Nominee"/*, new { ownerID = ownerData.OwnerId }*/);
             }
 
             ViewBag.OwnerTypes = HelperMethods.GetListFromEnum<OwnerType>();

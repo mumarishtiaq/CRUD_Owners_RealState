@@ -14,21 +14,21 @@ namespace CRUD_Owners_RealState.Controllers
     {
         private ImageValidation _imageValidation = new ImageValidation();
         private DBOperations_Nominees _dbOperations = new DBOperations_Nominees();
-        public ActionResult AddNominee(int ownerID)
+        public ActionResult AddNominee(/*int ownerID*/)
         {
             ViewBag.RelationTypes = HelperMethods.GetListFromEnum<RelationType>();
             Nominee nominee = new Nominee {
                 Name = "Name",
                 CNIC = "45454",
-                Relation = "Friend",
+                Relation = RelationType.Friend,
                 //Relation = RelationType.Friend,
                 SODOWO = "So/Do/Wo",
-                DOB = DateTime.Now,
+                DOB = DateTime.Now.ToString("yyyy-MM-dd"),
                 CellNo = "5644",
                 Gender  = "Male",
                 Address = "jhfudb hf ",
                 ImagePath = "~/SystemImages/NoUserImage.png",
-                OwnerId = ownerID
+                OwnerId = (int)TempData["OwnerId"]
             };
 
           
@@ -40,8 +40,6 @@ namespace CRUD_Owners_RealState.Controllers
         [HttpPost]
         public ActionResult AddNominee(Nominee nominee)
         {
-
-
             if (ModelState.IsValid)
             {
                 if (nominee.ImageFile != null)

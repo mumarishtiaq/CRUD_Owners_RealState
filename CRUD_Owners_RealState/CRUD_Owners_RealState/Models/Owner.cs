@@ -47,7 +47,7 @@ namespace CRUD_Owners_RealState.Models
         [Required(ErrorMessage = "D.O.B is required")]
         [DisplayName("D.O.B")]
         [DataType(DataType.Date)] // This ensures the input is a date
-        public DateTime DOB { get; set; }
+        public string DOB { get; set; }
 
         [Required(ErrorMessage = "Owner Type is required")]
         public OwnerType OwnerType { get; set; }
@@ -56,6 +56,8 @@ namespace CRUD_Owners_RealState.Models
         public HttpPostedFileBase ImageFile { get; set; }
 
         public virtual ICollection<Nominee> Nominees { get; set; } /*= new List<Nominee>();*/
+
+        public virtual ICollection<Property> Properties { get; set; }
         //public DateTime EntryTime { get; set; }
     }
 }

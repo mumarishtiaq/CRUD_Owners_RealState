@@ -1,0 +1,57 @@
+﻿@model CRUD_Owners_RealState.Models.Property
+
+@{
+    ViewBag.Title = "AddProperty";
+}
+
+<h2>AddProperty</h2>
+
+@Html.Raw(ViewBag.Message)
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Property</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.PlotNo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PlotNo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PlotNo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PropertyType, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+            <div class="col-md-9 col-sm-9 col-xs-12">
+                @Html.DropDownListFor(model => model.PropertyType, (IEnumerable<SelectListItem>)ViewBag.PropertyType, new { @class = "form-control", @id = "propertyTypeDropdown" })
+                @Html.ValidationMessageFor(model => model.PropertyType, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PropertyStatus, htmlAttributes: new { @class = "control-label col-md-3 col-sm-3 col-xs-12" })
+            <div class="col-md-9 col-sm-9 col-xs-12">
+                @Html.DropDownListFor(model => model.PropertyStatus, (IEnumerable<SelectListItem>)ViewBag.PropertyStatus, new { @class = "form-control", @id = "propertyStatusDropdown" })
+                @Html.ValidationMessageFor(model => model.PropertyStatus, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-success">Submit</button>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
