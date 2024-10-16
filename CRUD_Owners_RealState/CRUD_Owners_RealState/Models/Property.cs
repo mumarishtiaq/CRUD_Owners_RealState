@@ -26,9 +26,9 @@ namespace CRUD_Owners_RealState.Models
         [Required(ErrorMessage = "Property status is required")]
         public PropertyStatus PropertyStatus { get; set; }
 
-        [ForeignKey("Owner")]
-        public int OwnerId { get; set; }
+        public int? OwnerId { get; set; }
 
+        [ForeignKey("OwnerId")]
         public virtual Owner Owner { get; set; }
 
 

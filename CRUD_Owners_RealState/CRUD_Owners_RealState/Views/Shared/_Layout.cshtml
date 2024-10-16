@@ -17,6 +17,7 @@
             </button>
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
+                    <li>@Html.ActionLink("Manage Properties", "ViewProperties", "Property", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Add Owner", "AddOwner", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("View Owners", "ViewOwners", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                 </ul>

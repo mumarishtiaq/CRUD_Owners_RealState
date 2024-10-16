@@ -31,18 +31,30 @@ namespace CRUD_Owners_RealState.Controllers
 
                 ViewBag.Message = isDataInserted ? "<script>alert('Record Inserted')</script>" : "<script>alert('Record not Inserted')</script>";
             }
+            ViewBag.PropertyType = HelperMethods.GetListFromEnum<PropertyType>();
+            ViewBag.PropertyStatus = HelperMethods.GetListFromEnum<PropertyStatus>();
             return View();
         }
 
 
-            private Property CreateDummyData()
+        public ActionResult ViewProperties()
         {
-            return new Property { 
+            var properties =  db.Properties.ToList();
+            return View(properties);
+        }
+
+        private Property CreateDummyData()
+        {
+            return new Property
+            {
                 PlotNo = "D-97",
                 PropertyType = PropertyType.Commercial,
-                PropertyStatus = PropertyStatus.Available
+                PropertyStatus = PropertyStatus.Available,
             };
 
         }
+
+
+
     }
 }
