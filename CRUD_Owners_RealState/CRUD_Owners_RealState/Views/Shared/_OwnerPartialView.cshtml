@@ -1,5 +1,8 @@
 ﻿
 @model CRUD_Owners_RealState.Models.Owner
+@{
+    int propertyId = ViewData["PropertyID"] != null ? (int)ViewData["PropertyID"] : 0;
+}
 
 <style>
     /* Card container for horizontal layout */
@@ -67,23 +70,26 @@
 
     /* Responsive layout */
     .media (max-width: 768px) {
-        .owner-img-container {
-            flex: 1 0 30%; /* Image takes less width on smaller screens */
-        }
+        .owner-img-container
 
-        .owner-details-container {
-            flex: 1 0 70%; /* Content takes more space */
-        }
+    {
+        flex: 1 0 30%; /* Image takes less width on smaller screens */
+    }
 
-        .btn-rounded {
-            width: 100%; /* Full-width buttons on small screens */
-            margin-bottom: 5px;
-        }
+    .owner-details-container {
+        flex: 1 0 70%; /* Content takes more space */
+    }
 
-        .card-footer {
-            flex-direction: column;
-            justify-content: center;
-        }
+    .btn-rounded {
+        width: 100%; /* Full-width buttons on small screens */
+        margin-bottom: 5px;
+    }
+
+    .card-footer {
+        flex-direction: column;
+        justify-content: center;
+    }
+
     }
 
     /* Responsive grid */
@@ -122,7 +128,8 @@
         <!-- Footer: Buttons at the bottom, centered, and rounded -->
         <div class="card-footer d-flex justify-content-around">
             <a href="@Url.Action("ViewNominees", "Owner", new { id = Model.OwnerId })" class="btn btn-info btn-rounded">View Nominees</a>
-            <a href="@Url.Action("EditOwner", "Home", new { id = Model.OwnerId })" class="btn btn-warning btn-rounded">Edit Owner</a>
+            <a href="@Url.Action("ViewNominees", "Nominee", new { ownerId = Model.OwnerId, propertyId = propertyId })" class="btn btn-warning btn-rounded">Select</a>
+            <a href="@Url.Action("EditOwner", "Owner", new { id = Model.OwnerId })" class="btn btn-warning btn-rounded">Edit Owner</a>
             <a href="@Url.Action("Delete", "Owner", new { id = Model.OwnerId })" class="btn btn-danger btn-rounded">Delete Owner</a>
         </div>
     </div>

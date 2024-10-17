@@ -128,7 +128,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="BLL\ImageValidation.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OwnerController.cs" />
     <Compile Include="Controllers\NomineeController.cs" />
     <Compile Include="Controllers\PropertyController.cs" />
     <Compile Include="DatabaseService\DBOperations_Nominees.cs" />
@@ -236,14 +236,15 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\AddOwner.cshtml" />
-    <Content Include="Views\Home\ViewOwners.cshtml" />
+    <Content Include="Views\Owner\Index.cshtml" />
+    <Content Include="Views\Owner\AddOwner.cshtml" />
+    <Content Include="Views\Owner\ViewOwners.cshtml" />
     <Content Include="Views\Shared\_OwnerPartialView.cshtml" />
-    <Content Include="Views\Home\EditOwner.cshtml" />
+    <Content Include="Views\Owner\EditOwner.cshtml" />
     <Content Include="Views\Nominee\AddNominee.cshtml" />
     <Content Include="Views\Property\AddProperty.cshtml" />
     <Content Include="Views\Property\ViewProperties.cshtml" />
+    <Content Include="Views\Nominee\ViewNominees.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

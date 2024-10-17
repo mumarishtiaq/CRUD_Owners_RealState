@@ -39,5 +39,9 @@ namespace CRUD_Owners_RealState.DatabaseService
         {
             return db.Nominees.Where(row => row.NomineeId == id).FirstOrDefault();
         }
+        public List<Nominee> GetNomineeByOwnerId(int ownerId)
+        {
+            return db.Nominees.Where(n => n.OwnerId == ownerId).ToList();
+        }
     }
 }

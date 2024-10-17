@@ -13,7 +13,7 @@
 <div class="row no-gutters">
     @foreach (var item in Model)
     {
-        @Html.Partial("_OwnerPartialView", item)
+        @Html.Partial("_OwnerPartialView", item,new ViewDataDictionary { { "PropertyID", ViewBag.PropertyID } })
     }
 </div>
 

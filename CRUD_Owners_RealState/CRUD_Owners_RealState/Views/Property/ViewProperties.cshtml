@@ -12,9 +12,6 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Owner.FirstName)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.PlotNo)
         </th>
         <th>
@@ -29,9 +26,6 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Owner.FirstName)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.PlotNo)
         </td>
         <td>
@@ -41,9 +35,9 @@
             @Html.DisplayFor(modelItem => item.PropertyStatus)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PropertyID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PropertyID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PropertyID })
+            @Html.ActionLink("Edit", "Edit", new { id=item.PropertyID },new {@class = "btn btn-info btn-rounded" })
+            @Html.ActionLink("Print", "Details", new { id=item.PropertyID }, new { @class = "btn btn-info btn-rounded" })
+            @Html.ActionLink("Sell", "ViewOwners","Owner", new { propertyId = item.PropertyID , isSelectionMode = true}, new { @class = "btn btn-success" })
         </td>
     </tr>
 }

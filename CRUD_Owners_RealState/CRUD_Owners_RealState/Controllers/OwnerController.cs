@@ -9,7 +9,7 @@ using System;
 
 namespace CRUD_Owners_RealState.Controllers
 {
-    public class HomeController : Controller
+    public class OwnerController : Controller
     {
         private ImageValidation _imageValidation = new ImageValidation();
         private DBOperations_Owners _dbOperations = new DBOperations_Owners();
@@ -18,9 +18,13 @@ namespace CRUD_Owners_RealState.Controllers
             return View();
         }
 
-        public ActionResult ViewOwners()
+        public ActionResult ViewOwners(int propertyId, bool isSelectionMode)
         {
+            //fetch All Owners
             var owners = _dbOperations.GetOwners();
+
+            //save property id get property page to pass it ViewownerPage
+            ViewBag.PropertyID = propertyId;
             return View(owners);
         }
 
@@ -72,7 +76,7 @@ namespace CRUD_Owners_RealState.Controllers
                     ViewBag.Message = isDataInserted ? "<script>alert('Record Inserted')</script>" : "<script>alert('Record not Inserted')</script>";
                 }
                 TempData["ownerId"] = ownerData.OwnerId;
-                return RedirectToAction("AddNominee", "Nominee"/*, new { ownerID = ownerData.OwnerId }*/);
+                return RedirectToAction("AddNominee", "Nominee");
             }
 
             ViewBag.OwnerTypes = HelperMethods.GetListFromEnum<OwnerType>();

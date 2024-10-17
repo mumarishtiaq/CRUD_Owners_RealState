@@ -14,6 +14,15 @@ namespace CRUD_Owners_RealState.Controllers
     {
         private ImageValidation _imageValidation = new ImageValidation();
         private DBOperations_Nominees _dbOperations = new DBOperations_Nominees();
+
+        public ActionResult ViewNominees(int ownerId, int propertyId)
+        {
+            // Fetch nominees for the selected owner
+            var nominees = _dbOperations.GetNomineeByOwnerId(ownerId); 
+            ViewBag.OwnerID = ownerId;
+            ViewBag.PropertyID = propertyId;
+            return View(nominees);
+        }
         public ActionResult AddNominee(/*int ownerID*/)
         {
             ViewBag.RelationTypes = HelperMethods.GetListFromEnum<RelationType>();
@@ -68,6 +77,23 @@ namespace CRUD_Owners_RealState.Controllers
             ViewBag.RelationTypes = HelperMethods.GetListFromEnum<RelationType>();
             ModelState.Clear();
             return View();
+        }
+
+
+        //This work will done in property sell table do Here just for now
+        DbContextClass db = new DbContextClass();
+
+        //[HttpPost]
+        public ActionResult ConfirmSale(int ownerId, int propertyId)
+        {
+            var property = db.Properties.Find(propertyId);
+            if (property != null)
+            {
+                property.OwnerId = ownerId; // Assign the selected OwnerID
+                property.PropertyStatus = PropertyStatus.Sold; // Update the status
+                db.SaveChanges();
+            }
+            return RedirectToAction("ViewProperties","Property"); // Redirect back to the list of properties
         }
     }
 

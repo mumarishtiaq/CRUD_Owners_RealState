@@ -8,7 +8,7 @@
 
 @Html.Raw(ViewBag.Message)
 
-@using (Html.BeginForm("AddOwner", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("AddOwner", "Owner", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
