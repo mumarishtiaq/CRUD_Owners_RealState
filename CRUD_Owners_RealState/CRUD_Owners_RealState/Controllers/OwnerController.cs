@@ -18,7 +18,7 @@ namespace CRUD_Owners_RealState.Controllers
             return View();
         }
 
-        public ActionResult ViewOwners(int propertyId, bool isSelectionMode)
+        public ActionResult ViewOwners(int propertyId =0, bool isSelectionMode = false)
         {
             //fetch All Owners
             var owners = _dbOperations.GetOwners();

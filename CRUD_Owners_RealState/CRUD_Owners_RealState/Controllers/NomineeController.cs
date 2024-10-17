@@ -71,7 +71,7 @@ namespace CRUD_Owners_RealState.Controllers
 
                     ViewBag.Message = isDataInserted ? "<script>alert('Record Inserted')</script>" : "<script>alert('Record not Inserted')</script>";
                 }
-                //return RedirectToAction("AddNominee", "Nominee", new { id = ownerData.OwnerId });
+                return RedirectToAction("ViewOwners", "Owner");
 
             }
             ViewBag.RelationTypes = HelperMethods.GetListFromEnum<RelationType>();
